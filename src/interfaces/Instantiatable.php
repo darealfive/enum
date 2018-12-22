@@ -24,7 +24,7 @@ interface Instantiatable extends Enumerable, Comparable
      *
      * @return string name of this enum
      */
-    public function name();
+    public function name(): string;
 
     /**
      * Returns ordinal of this enumeration (its position in the enum declaration within @see names(), where the initial
@@ -39,14 +39,14 @@ interface Instantiatable extends Enumerable, Comparable
      *
      * @return string translated name of this enum
      */
-    public function translate();
+    public function translate(): string;
 
     /**
      * Returns a hash which can uniquely identify one specific enumerable value.
      *
      * @return string a hash to uniquely identify the enum
      */
-    public function hashCode();
+    public function hashCode(): string;
 
     /**
      * Returns a fresh instance of this enum. Useful if you are working with a serialized/unserialized or cloned version
@@ -59,5 +59,5 @@ interface Instantiatable extends Enumerable, Comparable
      *
      * @return static a fresh instance of this enum
      */
-    public function refresh();
+    public function refresh(): self;
 }

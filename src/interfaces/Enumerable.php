@@ -20,27 +20,27 @@ interface Enumerable
      *
      * @return array list of all enumeration names with their associated value as key
      */
-    public static function names();
+    public static function names(): array;
 
     /**
      * @return array list of all enumeration ordinal values (their positions in the enum declaration within @see names(),
      * where the initial constant is assigned an ordinal of zero) with their associated name as key
      */
-    public static function ordinals();
+    public static function ordinals(): array;
 
     /**
      * Returns a list of all translated names where the origin names are keys.
      *
      * @return array list of all translated enumerations with their associated name as key
      */
-    public static function translations();
+    public static function translations(): array;
 
     /**
      * Returns a list of all enumerations available in the class
      *
      * @return Instantiatable[] list of all enumerations available in the class
      */
-    public static function enumerations();
+    public static function enumerations(): array;
 
     /**
      * Returns an instance of the current enum type with the specified name. The name must match exactly an identifier
@@ -52,7 +52,7 @@ interface Enumerable
      *
      * @return Instantiatable enum instance of the current enum type with the specified name
      */
-    public static function valueOf($name);
+    public static function valueOf($name): Instantiatable;
 
     /**
      * Returns an instance of the current enum type with the specified ordinal value (its position in the enum
@@ -65,5 +65,5 @@ interface Enumerable
      *
      * @return Instantiatable enum instance of the current enum type with the specified ordinal value
      */
-    public static function fromOrdinal($ordinal);
+    public static function fromOrdinal($ordinal): Instantiatable;
 }

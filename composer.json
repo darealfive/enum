@@ -3,8 +3,8 @@
     "description": "An independent PHP Enum implementation inspired by the corresponding JAVA class.",
     "type": "library",
     "require": {
-        "php": ">=5.4 <=7.2",
-        "darealfive/base": "@dev"
+        "php": "^7.1",
+        "darealfive/base": "dev-master_php7"
     },
     "require-dev": {},
     "license": "BSD-3-Clause",
