@@ -3,7 +3,8 @@
     "description": "An independent PHP Enum implementation inspired by the corresponding JAVA class.",
     "type": "library",
     "require": {
-        "php": "^5.4"
+        "php": ">=5.4 <=7.2",
+        "darealfive/base": "@dev"
     },
     "require-dev": {},
     "license": "BSD-3-Clause",
@@ -11,6 +12,12 @@
         {
             "name": "Sebastian Krein",
             "email": "sebastian@itstrategen.de"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/darealfive/base"
         }
     ]
 }
