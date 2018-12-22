@@ -8,7 +8,6 @@
 namespace darealfive\enum;
 
 use darealfive\base\interfaces\Comparable;
-use darealfive\base\interfaces\enum\Instantiatable;
 use InvalidArgumentException;
 use OutOfRangeException;
 use DomainException;
@@ -19,9 +18,9 @@ use LogicException;
  *
  * @see     Enum::valueOf() as central factory to create an instance
  *
- * @package darealfive\enum\interfaces
+ * @package darealfive\enum
  */
-abstract class Enum implements Instantiatable
+abstract class Enum implements interfaces\Instantiatable
 {
     /**
      * Holds all the enums and is used as Enum store whenever an Enum is to be returned.
@@ -119,8 +118,8 @@ abstract class Enum implements Instantiatable
      *
      * @see Enum::$_hashCodeEnum where each enum is stored so the provided enum must come from this array.
      *
-     * @param Comparable $comparable object to check its equality to this Enum
-     * @param bool                  $typeSafe   whether to do type safe comparisons. Is ignored because this Enum can
+     * @param Comparable $comparable            object to check its equality to this Enum
+     * @param bool       $typeSafe              whether to do type safe comparisons. Is ignored because this Enum can
      *                                          only equal the provided one if they are exactly the same objects.
      *
      * @return bool true if this enum equals the provided one, false otherwise
