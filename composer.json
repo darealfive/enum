@@ -1,0 +1,16 @@
+{
+    "name": "darealfive/enum",
+    "description": "An independent PHP Enum implementation inspired by the corresponding JAVA class.",
+    "type": "library",
+    "require": {
+        "php": "^5.4"
+    },
+    "require-dev": {},
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Sebastian Krein",
+            "email": "sebastian@itstrategen.de"
+        }
+    ]
+}
