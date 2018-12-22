@@ -105,7 +105,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return static a fresh instance of this enum
      */
-    public final function refresh(): Instantiatable
+    public function refresh(): Instantiatable
     {
         return $this::valueOf($this->name);
     }
