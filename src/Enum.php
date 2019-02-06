@@ -9,7 +9,6 @@ namespace darealfive\enum;
 
 use darealfive\base\interfaces\Comparable;
 use darealfive\enum\interfaces\Instantiatable;
-use InvalidArgumentException;
 use OutOfRangeException;
 use DomainException;
 use LogicException;
@@ -181,6 +180,18 @@ abstract class Enum implements interfaces\Instantiatable
     }
 
     /**
+     * Checks whether this class contains an enum with given name.
+     *
+     * @param string $name the name of the enum to check its existence
+     *
+     * @return bool true if such enum exists, false otherwise
+     */
+    public static function has(string $name): bool
+    {
+        return !is_null(self::ordinalFrom($name));
+    }
+
+    /**
      * @return array list of all enumeration ordinal values (their positions in the enum declaration within @see names(),
      * where the initial constant is assigned an ordinal of zero) with their associated name as key
      */
@@ -222,23 +233,13 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return static enum instance of the current enum type with the specified name
      *
-     * @throws LogicException if given name is of invalid type, or there are more that once enum associated with that
-     * name, or there is no such Enum available.
+     * @throws LogicException if there are more that once enum associated with that name, or there is no such Enum
+     * available.
      */
-    public final static function valueOf($name): Instantiatable
+    public final static function valueOf(string $name): Instantiatable
     {
-        if (!is_string($name)) {
-
-            throw new InvalidArgumentException(sprintf('Enum can only be identified by strings, %s given',
-                gettype($name)));
-        }
-
-        $ordinals = array_keys(static::names(), $name, true);
-        $ordinal  = array_pop($ordinals);
-        if (!empty($ordinals)) {
-
-            throw new OutOfRangeException(sprintf('Enum type %s is not unique and thus can not be added', $name));
-        } elseif (is_null($ordinal)) {
+        $ordinal = self::ordinalFrom($name);
+        if (is_null($ordinal)) {
 
             throw new DomainException(sprintf('Enum type %s with the specified name %s does not exist',
                 get_called_class(), $name));
@@ -273,5 +274,24 @@ abstract class Enum implements interfaces\Instantiatable
         }
 
         return static::valueOf($names[$ordinal]);
+    }
+
+    /**
+     * Returns the ordinal from an enum associated with given name.
+     *
+     * @param string $name name of the enum to return its ordinal
+     *
+     * @return mixed|null the ordinal or null
+     * @throws OutOfRangeException if there are more that once enum associated with given name
+     */
+    private static function ordinalFrom(string $name)
+    {
+        $ordinals = array_keys(static::names(), $name, true);
+        if (!empty($ordinals)) {
+
+            throw new OutOfRangeException(sprintf('Enum type %s is not unique and thus can not be added', $name));
+        }
+
+        return array_pop($ordinals);
     }
 }

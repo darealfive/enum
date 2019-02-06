@@ -15,6 +15,15 @@ namespace darealfive\enum\interfaces;
 interface Enumerable
 {
     /**
+     * Checks whether this class contains an enum with given name.
+     *
+     * @param string $name the name of the enum to check its existence
+     *
+     * @return bool true if such enum exists, false otherwise
+     */
+    public static function has(string $name): bool;
+
+    /**
      * Central method which indicates what enums are available. The keys are the ordinal numbers and the values are the
      * names.
      *
@@ -52,7 +61,7 @@ interface Enumerable
      *
      * @return Instantiatable enum instance of the current enum type with the specified name
      */
-    public static function valueOf($name): Instantiatable;
+    public static function valueOf(string $name): Instantiatable;
 
     /**
      * Returns an instance of the current enum type with the specified ordinal value (its position in the enum
