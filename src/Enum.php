@@ -287,11 +287,17 @@ abstract class Enum implements interfaces\Instantiatable
     private static function ordinalFrom(string $name)
     {
         $ordinals = array_keys(static::names(), $name, true);
+        $ordinal  = array_pop($ordinals);
+
+        /*
+         * List of ordinal values must to be empty after we removed the ordinal value from it. If not, there is more
+         * than one enum associated with name $name and thus we throw an exception.
+         */
         if (!empty($ordinals)) {
 
             throw new OutOfRangeException(sprintf('Enum type %s is not unique and thus can not be added', $name));
         }
 
-        return array_pop($ordinals);
+        return $ordinal;
     }
 }
