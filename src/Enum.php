@@ -180,6 +180,18 @@ abstract class Enum implements interfaces\Instantiatable
     }
 
     /**
+     * Checks whether this class contains an enum with given name.
+     *
+     * @param string $name the name of the enum to check its existence
+     *
+     * @return bool true if such enum exists, false otherwise
+     */
+    public static function has($name)
+    {
+        return !is_null(self::ordinalFrom($name));
+    }
+
+    /**
      * @return array list of all enumeration ordinal values (their positions in the enum declaration within @see names(),
      * where the initial constant is assigned an ordinal of zero) with their associated name as key
      */
@@ -226,18 +238,8 @@ abstract class Enum implements interfaces\Instantiatable
      */
     public final static function valueOf($name)
     {
-        if (!is_string($name)) {
-
-            throw new InvalidArgumentException(sprintf('Enum can only be identified by strings, %s given',
-                gettype($name)));
-        }
-
-        $ordinals = array_keys(static::names(), $name, true);
-        $ordinal  = array_pop($ordinals);
-        if (!empty($ordinals)) {
-
-            throw new OutOfRangeException(sprintf('Enum type %s is not unique and thus can not be added', $name));
-        } elseif (is_null($ordinal)) {
+        $ordinal = self::ordinalFrom($name);
+        if (is_null($ordinal)) {
 
             throw new DomainException(sprintf('Enum type %s with the specified name %s does not exist',
                 get_called_class(), $name));
@@ -272,5 +274,37 @@ abstract class Enum implements interfaces\Instantiatable
         }
 
         return static::valueOf($names[$ordinal]);
+    }
+
+    /**
+     * Returns the ordinal from an enum associated with given name.
+     *
+     * @param string $name name of the enum to return its ordinal
+     *
+     * @return mixed|null the ordinal or null
+     * @throws LogicException if given name is of invalid type, or there are more than one enum associated with that
+     * name
+     */
+    private static function ordinalFrom($name)
+    {
+        if (!is_string($name)) {
+
+            throw new InvalidArgumentException(sprintf('Enum can only be identified by strings, %s given',
+                gettype($name)));
+        }
+
+        $ordinals = array_keys(static::names(), $name, true);
+        $ordinal  = array_pop($ordinals);
+
+        /*
+         * List of ordinal values must to be empty after we removed the ordinal value from it. If not, there is more
+         * than one enum associated with name $name and thus we throw an exception.
+         */
+        if (!empty($ordinals)) {
+
+            throw new OutOfRangeException(sprintf('Enum type %s is not unique and thus can not be added', $name));
+        }
+
+        return $ordinal;
     }
 }
