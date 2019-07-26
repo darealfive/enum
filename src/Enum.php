@@ -9,6 +9,7 @@ namespace darealfive\enum;
 
 use darealfive\base\interfaces\Comparable;
 use darealfive\enum\interfaces\Instantiatable;
+use InvalidArgumentException;
 use OutOfRangeException;
 use DomainException;
 use LogicException;
@@ -20,7 +21,7 @@ use LogicException;
  *
  * @package darealfive\enum
  */
-abstract class Enum implements interfaces\Instantiatable
+abstract class Enum implements Instantiatable
 {
     /**
      * Holds all the enums and is used as Enum store whenever an Enum is to be returned.
@@ -52,7 +53,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return string name of this enum
      */
-    public final function name(): string
+    final public function name(): string
     {
         return $this->name;
     }
@@ -65,7 +66,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return mixed the value of this enum
      */
-    public final function ordinal()
+    final public function ordinal()
     {
         return $this->ordinal;
     }
@@ -78,7 +79,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return string (translated) name of this enum
      */
-    public final function translate(): string
+    final public function translate(): string
     {
         return static::translations()[$this->name()];
     }
@@ -88,7 +89,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return string a hash to uniquely identify the enum
      */
-    public final function hashCode(): string
+    final public function hashCode(): string
     {
         return md5(serialize($this));
     }
@@ -104,7 +105,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return static a fresh instance of this enum
      */
-    public function refresh(): Instantiatable
+    final public function refresh(): Instantiatable
     {
         return $this::valueOf($this->name);
     }
@@ -118,13 +119,13 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @see Enum::$_hashCodeEnum where each enum is stored so the provided enum must come from this array.
      *
-     * @param Comparable $comparable            object to check its equality to this Enum
-     * @param bool       $typeSafe              whether to do type safe comparisons. Is ignored because this Enum can
-     *                                          only equal the provided one if they are exactly the same objects.
+     * @param Comparable $comparable object to check its equality to this Enum
+     * @param bool       $typeSafe   whether to do type safe comparisons. Is ignored because this Enum can only equal
+     *                               the provided one if they are exactly the same objects.
      *
      * @return bool true if this enum equals the provided one, false otherwise
      */
-    public final function equals(Comparable $comparable, $typeSafe = true): bool
+    final public function equals(Comparable $comparable, $typeSafe = true): bool
     {
         return $this->compareValue() === $comparable->compareValue();
     }
@@ -134,7 +135,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return static the enum to be used for the comparison.
      */
-    public final function compareValue(): self
+    final public function compareValue(): self
     {
         return $this;
     }
@@ -148,7 +149,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @access private
      */
-    private function __construct($name, $ordinal)
+    private function __construct(string $name, $ordinal)
     {
         $this->name    = $name;
         $this->ordinal = $ordinal;
@@ -161,7 +162,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return string (translated) name of this enum
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->translate();
     }
@@ -174,7 +175,7 @@ abstract class Enum implements interfaces\Instantiatable
      *
      * @return static
      */
-    public final static function __callStatic($name, $arguments): self
+    final public static function __callStatic(string $name, $arguments): self
     {
         return static::valueOf($name);
     }
@@ -188,14 +189,17 @@ abstract class Enum implements interfaces\Instantiatable
      */
     public static function has(string $name): bool
     {
-        return !is_null(self::ordinalFrom($name));
+        return self::ordinalFrom($name) !== null;
     }
 
     /**
-     * @return array list of all enumeration ordinal values (their positions in the enum declaration within @see names(),
-     * where the initial constant is assigned an ordinal of zero) with their associated name as key
+     * Returns an associative list of all enumeration ordinal values (their positions in the enum declaration
+     * within @see names(), where the initial constant is assigned an ordinal of zero) with their associated name as
+     * key.
+     *
+     * @return array list of all enumeration ordinals with their associated name as key
      */
-    public final static function ordinals(): array
+    final public static function ordinals(): array
     {
         return array_flip(static::names());
     }
@@ -213,11 +217,20 @@ abstract class Enum implements interfaces\Instantiatable
     /**
      * Returns a list of all enumerations available in the class
      *
-     * @return static[] list of all enumerations available in the class
+     * @param array|null $names list of enums to be returned. Defaults to null, meaning all enums as listed in names()
+     *                          will be returned. If it is an array, only the enums in the array will be returned.
+     *
+     * @return static[] list of all (optionally filtered) enumerations available in the class
      */
-    public final static function enumerations(): array
+    final public static function enumerations(array $names = null): array
     {
-        return array_map('static::valueOf', static::names());
+        $_names = static::names();
+        if ($names !== null) {
+
+            $_names = array_intersect(static::names(), $names);
+        }
+
+        return array_map('static::valueOf', $_names);
     }
 
     /**
@@ -236,13 +249,13 @@ abstract class Enum implements interfaces\Instantiatable
      * @throws LogicException if there are more that once enum associated with that name, or there is no such Enum
      * available.
      */
-    public final static function valueOf(string $name): Instantiatable
+    final public static function valueOf(string $name): Instantiatable
     {
         $ordinal = self::ordinalFrom($name);
-        if (is_null($ordinal)) {
+        if ($ordinal === null) {
 
             throw new DomainException(sprintf('Enum type %s with the specified name %s does not exist',
-                get_called_class(), $name));
+                static::class, $name));
         }
 
         $enum = new static($name, $ordinal);
@@ -267,10 +280,16 @@ abstract class Enum implements interfaces\Instantiatable
      */
     public static function fromOrdinal($ordinal): Instantiatable
     {
-        if (!key_exists($ordinal, $names = static::names())) {
+        if (!is_numeric($ordinal) && !is_string($ordinal)) {
+
+            throw new InvalidArgumentException(sprintf('Ordinals can only be identified by numbers or strings, %s given',
+                gettype($ordinal)));
+        }
+
+        if (!array_key_exists($ordinal, $names = static::names())) {
 
             throw new DomainException(sprintf('Enum type %s with the specified ordinal %s does not exist',
-                get_called_class(), $ordinal));
+                static::class, $ordinal));
         }
 
         return static::valueOf($names[$ordinal]);
@@ -282,7 +301,7 @@ abstract class Enum implements interfaces\Instantiatable
      * @param string $name name of the enum to return its ordinal
      *
      * @return mixed|null the ordinal or null
-     * @throws OutOfRangeException if there are more that once enum associated with given name
+     * @throws OutOfRangeException if there are more than one enum associated with given name
      */
     private static function ordinalFrom(string $name)
     {

@@ -32,8 +32,11 @@ interface Enumerable
     public static function names(): array;
 
     /**
-     * @return array list of all enumeration ordinal values (their positions in the enum declaration within @see names(),
-     * where the initial constant is assigned an ordinal of zero) with their associated name as key
+     * Returns an associative list of all enumeration ordinal values (their positions in the enum declaration
+     * within @see names(), where the initial constant is assigned an ordinal of zero) with their associated name as
+     * key.
+     *
+     * @return array list of all enumeration ordinals with their associated name as key
      */
     public static function ordinals(): array;
 
@@ -47,9 +50,12 @@ interface Enumerable
     /**
      * Returns a list of all enumerations available in the class
      *
-     * @return Instantiatable[] list of all enumerations available in the class
+     * @param array|null $names list of enums to be returned. Defaults to null, meaning all enums as listed in names()
+     *                          will be returned. If it is an array, only the enums in the array will be returned.
+     *
+     * @return Instantiatable[] list of all (optionally filtered) enumerations available in the class
      */
-    public static function enumerations(): array;
+    public static function enumerations(array $names = null): array;
 
     /**
      * Returns an instance of the current enum type with the specified name. The name must match exactly an identifier
