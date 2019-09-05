@@ -7,7 +7,7 @@
 
 namespace darealfive\enum;
 
-use darealfive\base\interfaces\Comparable;
+use darealfive\enum\interfaces\Comparable;
 use darealfive\enum\interfaces\Instantiatable;
 use InvalidArgumentException;
 use OutOfRangeException;
