@@ -62,9 +62,8 @@ abstract class Enum implements Instantiatable
      * The ordinal of this enumeration (its position in the enum declaration, where the initial constant is assigned an
      * ordinal of zero).
      *
-     * @see names() for the enum declaration
-     *
      * @return mixed the value of this enum
+     * @see names() for the enum declaration
      */
     final public function ordinal()
     {
@@ -75,9 +74,8 @@ abstract class Enum implements Instantiatable
      * Returns the translated representation of this enum name. If no translation is available the string being returned
      * will be the name of this enum as contained in the declaration.
      *
-     * @see names() for the declaration
-     *
      * @return string (translated) name of this enum
+     * @see names() for the declaration
      */
     final public function translate(): string
     {
@@ -101,9 +99,8 @@ abstract class Enum implements Instantiatable
      * However, the refreshed version can be used like any other newly created enum
      * => e.g. checking its equality with other enum again return true if they are the same objects.
      *
-     * @see equals() will only work with "refreshed" enums => uncloned and not serialized
-     *
      * @return static a fresh instance of this enum
+     * @see equals() will only work with "refreshed" enums => uncloned and not serialized
      */
     final public function refresh(): Instantiatable
     {
@@ -114,16 +111,14 @@ abstract class Enum implements Instantiatable
      * Checks whether this enum is equal to the provided one. Each enum is created once so the provided object can only
      * be equal with this one if they are exactly the same objects.
      *
-     * @see refresh() However, if this returns false despite the fact that you are sure they are the same, use a
-     * refreshed version. If this helps you may have worked with a serialized/cloned version of the enum.
-     *
-     * @see Enum::$_hashCodeEnum where each enum is stored so the provided enum must come from this array.
-     *
      * @param Comparable $comparable object to check its equality to this Enum
      * @param bool       $typeSafe   whether to do type safe comparisons. Is ignored because this Enum can only equal
      *                               the provided one if they are exactly the same objects.
      *
      * @return bool true if this enum equals the provided one, false otherwise
+     * @see Enum::$_hashCodeEnum where each enum is stored so the provided enum must come from this array.
+     * @see refresh() However, if this returns false despite the fact that you are sure they are the same, use a
+     * refreshed version. If this helps you may have worked with a serialized/cloned version of the enum.
      */
     final public function equals(Comparable $comparable, $typeSafe = true): bool
     {
@@ -193,11 +188,10 @@ abstract class Enum implements Instantiatable
     }
 
     /**
-     * Returns an associative list of all enumeration ordinal values (their positions in the enum declaration
-     * within @see names(), where the initial constant is assigned an ordinal of zero) with their associated name as
-     * key.
+     * Returns an associative list of all enumeration ordinal values (their positions in the enum declaration).
      *
      * @return array list of all enumeration ordinals with their associated name as key
+     * @see names(), where the initial constant is assigned an ordinal of zero) with their associated name as key.
      */
     final public static function ordinals(): array
     {
@@ -240,14 +234,13 @@ abstract class Enum implements Instantiatable
      * Note that this method is the only way to create Enumerable instances. Additionally this method will rather
      * returns a stored version (of a previous call) of the requested enum instead of re-creating it.
      *
-     * @see $_hashCodeEnum which holds all the enums and is used as Enum store whenever an Enum is to be returned.
-     *
      * @param string $name the name of the constant to return
      *
      * @return static enum instance of the current enum type with the specified name
      *
      * @throws LogicException if there are more that once enum associated with that name, or there is no such Enum
      * available.
+     * @see $_hashCodeEnum which holds all the enums and is used as Enum store whenever an Enum is to be returned.
      */
     final public static function valueOf(string $name): Instantiatable
     {
@@ -269,14 +262,13 @@ abstract class Enum implements Instantiatable
 
     /**
      * Returns an instance of the current enum type with the specified ordinal value (its position in the enum
-     * declaration within @see names(), where the initial constant is assigned an ordinal of zero) with their associated
-     * name as key.
-     *
-     * @see valueOf this works the same but using enum name instead of its oridinal value.
+     * declaration).
      *
      * @param mixed $ordinal the ordinal value of the constant to be returned
      *
      * @return static enum instance of the current enum type with the specified ordinal value
+     * @see names(), where the initial constant is assigned an ordinal of zero) with their associated name as key.
+     * @see valueOf this works the same but using enum name instead of its oridinal value.
      */
     public static function fromOrdinal($ordinal): Instantiatable
     {
