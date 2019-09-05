@@ -91,7 +91,7 @@ abstract class Enum implements Instantiatable
      */
     final public function hashCode(): string
     {
-        return md5(serialize($this));
+        return spl_object_hash($this);
     }
 
     /**
