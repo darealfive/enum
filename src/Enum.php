@@ -62,9 +62,8 @@ abstract class Enum implements Instantiatable
      * The ordinal of this enumeration (its position in the enum declaration, where the initial constant is assigned an
      * ordinal of zero).
      *
-     * @see names() for the enum declaration
-     *
      * @return mixed the value of this enum
+     * @see names() for the enum declaration
      */
     final public function ordinal()
     {
@@ -75,9 +74,8 @@ abstract class Enum implements Instantiatable
      * Returns the translated representation of this enum name. If no translation is available the string being returned
      * will be the name of this enum as contained in the declaration.
      *
-     * @see names() for the declaration
-     *
      * @return string (translated) name of this enum
+     * @see names() for the declaration
      */
     final public function translate(): string
     {
@@ -101,9 +99,8 @@ abstract class Enum implements Instantiatable
      * However, the refreshed version can be used like any other newly created enum
      * => e.g. checking its equality with other enum again return true if they are the same objects.
      *
-     * @see equals() will only work with "refreshed" enums => uncloned and not serialized
-     *
      * @return static a fresh instance of this enum
+     * @see equals() will only work with "refreshed" enums => uncloned and not serialized
      */
     final public function refresh(): Instantiatable
     {
