@@ -32,8 +32,10 @@ interface Enumerable
     public static function names();
 
     /**
-     * @return array list of all enumeration ordinal values (their positions in the enum declaration within @see names(),
-     * where the initial constant is assigned an ordinal of zero) with their associated name as key
+     * Returns an associative list of all enumeration ordinal values (their positions in the enum declaration)
+     *
+     * @return array list of all enumeration ordinals with their associated name as key
+     * @see names(), where the initial constant is assigned an ordinal of zero) with their associated name as key.
      */
     public static function ordinals();
 
@@ -47,32 +49,33 @@ interface Enumerable
     /**
      * Returns a list of all enumerations available in the class
      *
-     * @return Instantiatable[] list of all enumerations available in the class
+     * @param array|null $names list of enums to be returned. Defaults to null, meaning all enums as listed in names()
+     *                          will be returned. If it is an array, only the enums in the array will be returned.
+     *
+     * @return Instantiatable[] list of all (optionally filtered) enumerations available in the class
      */
-    public static function enumerations();
+    public static function enumerations(array $names = null);
 
     /**
      * Returns an instance of the current enum type with the specified name. The name must match exactly an identifier
      * used to declare an enum constant in this type. (Extraneous whitespace characters are not permitted.)
      *
-     * @see fromOrdinal this works the same but using enum ordinal value instead of its name.
-     *
      * @param string $name the name of the constant to return
      *
      * @return Instantiatable enum instance of the current enum type with the specified name
+     * @see fromOrdinal this works the same but using enum ordinal value instead of its name.
      */
     public static function valueOf($name);
 
     /**
      * Returns an instance of the current enum type with the specified ordinal value (its position in the enum
-     * declaration within @see names(), where the initial constant is assigned an ordinal of zero) with their associated
-     * name as key.
-     *
-     * @see valueOf this works the same but using enum name instead of its oridinal value.
+     * declaration)
      *
      * @param mixed $ordinal the ordinal value of the constant to be returned
      *
      * @return Instantiatable enum instance of the current enum type with the specified ordinal value
+     * @see names(), where the initial constant is assigned an ordinal of zero) with their associated name as key.
+     * @see valueOf this works the same but using enum name instead of its oridinal value.
      */
     public static function fromOrdinal($ordinal);
 }

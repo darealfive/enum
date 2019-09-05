@@ -7,8 +7,6 @@
 
 namespace darealfive\enum\interfaces;
 
-use darealfive\base\interfaces\Comparable;
-
 /**
  * Interface Instantiatable
  * Should be implemented by all classes which wants to be able to return instances of the corresponding Enumerable.
@@ -27,10 +25,10 @@ interface Instantiatable extends Enumerable, Comparable
     public function name();
 
     /**
-     * Returns ordinal of this enumeration (its position in the enum declaration within @see names(), where the initial
-     * constant is assigned an ordinal of zero).
+     * Returns ordinal of this enumeration (its position in the enum declaration)
      *
      * @return mixed the value of this enum
+     * @see names(), where the initial constant is assigned an ordinal of zero.
      */
     public function ordinal();
 
@@ -55,9 +53,8 @@ interface Instantiatable extends Enumerable, Comparable
      * However, the refreshed version can be used like any other newly created enum
      * => e.g. checking its equality with other enum again return true if they are the same objects.
      *
-     * @see equals() will only work with "refreshed" enums => uncloned and not serialized
-     *
      * @return static a fresh instance of this enum
+     * @see equals() will only work with "refreshed" enums => uncloned and not serialized
      */
     public function refresh();
 }
