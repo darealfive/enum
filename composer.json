@@ -16,12 +16,6 @@
       "email": "sebastian@itstrategen.de"
     }
   ],
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/darealfive/base"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "darealfive\\enum\\": "src"

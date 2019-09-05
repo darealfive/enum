@@ -7,8 +7,6 @@
 
 namespace darealfive\enum\interfaces;
 
-use darealfive\base\interfaces\Comparable;
-
 /**
  * Interface Instantiatable
  * Should be implemented by all classes which wants to be able to return instances of the corresponding Enumerable.
